@@ -8,10 +8,59 @@
     <title>JSDev</title>
   </head>
   <body>
-    <h1>Alright. You're set.</h1>
-      <h2 class="tintedBlackLeft">Now build something amazing!</h2>
-      <p>JS in FM is amazing</p>
-    <button type="button">Click Me!</button>
+    <div class="container">
+      
+      <div class="main-content">
+        <!-- Master List (Left Side) -->
+        <div class="master-panel">
+        <div class="panel-header">
+            <h2>Course Records</h2>
+            <button id="addNewBtn" class="add-btn">+ Add New</button>
+          </div>
+          <!-- Filter input -->
+          <div class="filter-container">
+            <input type="text" id="filterInput" class="filter-input" placeholder="Filter records...">
+          </div>
+          <div class="record-list" id="recordList">
+            <!-- Records will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Detail View (Right Side) -->
+        <div class="detail-panel">
+          <div class="panel-header">
+            <h2>Course Email Details</h2>
+          </div>
+          <form class="detail-form" id="emailForm">
+            <div class="form-group">
+              <label for="courseId">Course ID:</label>
+              <input type="text" id="courseId" name="courseId" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="courseName">Course Name:</label>
+              <input type="text" id="courseName" name="courseName" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="emailSubject">Email Subject:</label>
+              <input type="text" id="emailSubject" name="emailSubject" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="emailBody">Email Body:</label>
+              <textarea id="emailBody" name="emailBody" rows="10" required></textarea>
+              <p class="helper-text">Use [[studentFirstName]] to insert the relevant data.</p>
+            </div>
+            
+            <div class="form-actions">
+            <button type="button" id="saveBtn" class="save-btn">Save Email</button>
+              <button type="button" id="deleteBtn" class="delete-btn">Delete Email</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <script type="module">
       import "./src/index.js";
