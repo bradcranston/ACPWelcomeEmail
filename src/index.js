@@ -24,8 +24,8 @@ function renderRecordList() {
   let anyVisible = false;
   records.forEach((rec, idx) => {
     const match = !filter ||
-      rec.courseId.toLowerCase().includes(filter) ||
-      rec.courseName.toLowerCase().includes(filter);
+      (rec.courseId && rec.courseId.toLowerCase().includes(filter)) ||
+      (rec.courseName && rec.courseName.toLowerCase().includes(filter));
     if (!match) return;
     anyVisible = true;
     const item = document.createElement('div');
@@ -35,14 +35,10 @@ function renderRecordList() {
       saveRecord();
       selectRecord(idx);
     });
-    const title = document.createElement('div');
-    title.className = 'record-course-id';
-    title.textContent = rec.courseId;
-    const subtitle = document.createElement('div');
-    subtitle.className = 'record-course-name';
-    subtitle.textContent = rec.courseName;
-    item.appendChild(title);
-    item.appendChild(subtitle);
+  const title = document.createElement('div');
+  title.className = 'record-course-name';
+  title.textContent = rec.courseName || '(Untitled Course)';
+  item.appendChild(title);
     recordListEl.appendChild(item);
   });
   if (!anyVisible) {
@@ -56,12 +52,13 @@ function renderRecordList() {
 // Populate form with record data or clear
 function populateForm(record) {
   if (record) {
-    inputs.courseId.value = record.courseId || '';
+  if (inputs.courseId) inputs.courseId.value = record.courseId || '';
     inputs.courseName.value = record.courseName || '';
     inputs.emailSubject.value = record.emailSubject || '';
     inputs.emailBody.value = record.emailBody || '';
   } else {
-    form.reset();
+  form.reset();
+  if (inputs.courseId) inputs.courseId.value = '';
   }
 }
 
@@ -82,7 +79,8 @@ function clearForm() {
 // Helper to generate a UUID (RFC4122 v4)
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
 }
@@ -90,7 +88,7 @@ function generateUUID() {
 // Save record and call FileMaker script
 function saveRecord() {
   let data = {
-    courseId: inputs.courseId.value,
+    courseId: inputs.courseId ? inputs.courseId.value : '',
     courseName: inputs.courseName.value,
     emailSubject: inputs.emailSubject.value,
     emailBody: inputs.emailBody.value
